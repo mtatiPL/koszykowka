@@ -1,6 +1,7 @@
 package com.example.skrypt_do_koszykwki;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
@@ -22,14 +23,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(view);
 
         punktyViewModel=new ViewModelProvider(this).get(PunktyViewModel.class);
-        binding.punktyTextView.setText(Integer.toString(punktyViewModel.getPunkty()));
+
+        punktyViewModel.getPunkty().observe(this,
+                new Observer<Integer>() {
+                    @Override
+                    public void onChanged(Integer integer) {
+                        binding.punktyTextView.setText(String.valueOf(integer));
+                    }
+                }
+        );
+
         //dzięki bindowaniu widoków nie musimy uzywać findViewById
         binding.button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
               //  punkty++;
                 punktyViewModel.dodajPunkty(1);
-            binding.punktyTextView.setText(Integer.toString(punktyViewModel.getPunkty()));
+
             }
         });
         binding.button2.setOnClickListener(new View.OnClickListener() {
@@ -37,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //  punkty++;
                 punktyViewModel.dodajPunkty(2);
-                binding.punktyTextView.setText(Integer.toString(punktyViewModel.getPunkty()));
+
             }
         });
         binding.button3.setOnClickListener(new View.OnClickListener() {
@@ -45,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //  punkty++;
                 punktyViewModel.dodajPunkty(3);
-                binding.punktyTextView.setText(Integer.toString(punktyViewModel.getPunkty()));
+
             }
         });
     }
